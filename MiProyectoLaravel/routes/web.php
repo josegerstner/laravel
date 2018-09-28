@@ -11,4 +11,5 @@
 |
 */
 
-Route::get('/saludar', 'MiControlador@saludar');
+// Route::get('/saludar', 'MiControlador@saludar');
+Route::get('/saludar/{nombre}', 'MiControlador@saludar');

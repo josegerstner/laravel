@@ -9,7 +9,10 @@ class MiControlador extends Controller
     /**
      * retorna un mensaje de saludo
      */
-    public function saludar(){
-        return 'Hola Mundo';
+    // public function saludar(){
+    //     return 'Hola Mundo';
+    // }
+    public function saludar($nombre){
+        return "Hola {$nombre}";
     }
 }
