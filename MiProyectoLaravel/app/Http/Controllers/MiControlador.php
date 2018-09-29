@@ -12,7 +12,8 @@ class MiControlador extends Controller
     // public function saludar(){
     //     return 'Hola Mundo';
     // }
-    public function saludar($nombre){
-        return "Hola {$nombre}";
+    public function saludar($nombre, $apellido = null){
+        return "Hola {$nombre} {$apellido}";
+        // return route('panel.saludos');
     }
 }

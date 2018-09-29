@@ -12,4 +12,4 @@
 */
 
 // Route::get('/saludar', 'MiControlador@saludar');
-Route::get('/saludar/{nombre}', 'MiControlador@saludar');
+Route::get('/saludar/{nombre}/{apellido?}', 'MiControlador@saludar');
