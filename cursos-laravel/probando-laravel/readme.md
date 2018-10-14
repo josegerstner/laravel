@@ -41,7 +41,7 @@ Condición ? Verdadero : Falso
 ```
 - **isset($variable)**: evalúa si una variable está definida.  
 - **is_null($variable)**: evalúa si el resultado de una variable es nulo.  
-- _@if(condicion)_: evalúa la veracidad de la condición.
+- **@if(condicion)**: evalúa la veracidad de la condición.
 ```
 @if(condicion)
     verdadero
@@ -49,19 +49,19 @@ Condición ? Verdadero : Falso
     falso
 @endif
 ```
-- _@for()_: repite el ciclo hasta que no se cumpla la condición.
+- **@for()**: repite el ciclo hasta que no se cumpla la condición.
 ```
 @for(inicializo variable; condicion; incremento variable)
     ciclo
 @endfor
 ```  
-- _@while()_: repite el ciclo hasta que no se cumpla la condición.
+- **@while()**: repite el ciclo hasta que no se cumpla la condición.
 ```
 @while(condicion)
     ciclo
 @endwhile
 ```
-- _@foreach()_: recorre listas o colecciones.
+- **@foreach()**: recorre listas o colecciones.
 ```
 @foreach(lista as objeto)
     {{objeto}}
