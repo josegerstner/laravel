@@ -23,6 +23,18 @@ Route::post('/holamundo', function () {
     return 'Hello world! por post';
 });
 
-Route::get('/contacto', function () {
-    return view('contacto');
-});
+// Route::get('/contacto', function () {
+//     return view('contacto');
+// });
+Route::get('/contacto/{nombre?}/{edad?}', function ($nombre = "Pedro", $edad = 30) {
+    // return view('contacto', array(
+    //     "nombre" => $nombre,
+    //     "edad" => $edad
+    // ));
+    return view('contacto')
+        ->with('nombre', $nombre)
+        ->with('edad', $edad);
+})->where([
+    'nombre' => '[A-Za-z]+',
+    'edad' => '[0-9]+'
+]);
