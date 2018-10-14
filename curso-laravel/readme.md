@@ -17,3 +17,7 @@ Creamos el proyecto Laravel dentro de nuestro workspace con el comando
 ```
 composer create-project laravel/laravel probando-laravel --prefer-dist
 ```
+
+## Routing
+Las rutas se configuraban en el archivo /app/Http/routes.php del proyecto. En la versión que tengo hay una fichero /routes/web.php\n
+Las vistas se crean en /resources/views con la extensión .blade.php por convención.

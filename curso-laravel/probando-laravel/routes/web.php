@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/hola-mundo', function () {
+    return '¡Hola mundo!';
+});
+
+Route::post('/holamundo', function () {
+    return 'Hello world! por post';
+});
+
+Route::get('/contacto', function () {
+    return view('contacto');
+});
