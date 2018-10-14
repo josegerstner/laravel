@@ -34,7 +34,7 @@ Podemos pasarle variables a las vistas como arrays o utilizando el método with 
 Podemos crear una carpeta dentro del fichero **views** del proyecto y routear a un archivo.blade.php con un punto (también permite la barra).
 En las vistas de Blade mostramos información usando dobles llaves para encerrar variables {{$variable}}. También nos permite con llave - doble signo de exclamación {!!$variable!!} o como variables php <?=$variable?>.  
   
-###Condicionales:
+### Condicionales:
 - **Condición ternaria**:
 ```
 Condición ? Verdadero : Falso
@@ -74,13 +74,13 @@ Condición ? Verdadero : Falso
 <?php $i++; ?>
 ```  
   
-##Insertar una vista dentro de otra vista
+## Insertar una vista dentro de otra vista
 Se utiliza el método **include** dentro de la vista donde quiero insertar la otra vista:
 ```
 @include('otravista')
 ```  
-  
-##Plantillas en Laravel 5
+    
+## Plantillas en Laravel 5
 Las plantillas en Laravel 5 se definen dentro de los directorios de **views** y dentro de **layouts**.  
 Podemos definir una plantilla maestra para poder heredar de ella cuando lo necesitemos.  
 Para ver cómo se hacer una plantilla, ver /resources/views/layouts/master.blade.php.  
