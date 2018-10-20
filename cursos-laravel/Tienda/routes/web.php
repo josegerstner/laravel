@@ -25,7 +25,8 @@ Route::get('products/create', function () {
 
 Route::post('products', function (Request $request) {
     $newProduct = new Product;
-    $newProduct -> description = $request->input('description'); //input nos permite capturar el valor de lo que haya enviado el formulario
+    $newProduct -> description = $request->input('description');
+    //input nos permite capturar el valor de lo que haya enviado el formulario
     $newProduct -> price = $request->input('price');
     $newProduct->save();
 
