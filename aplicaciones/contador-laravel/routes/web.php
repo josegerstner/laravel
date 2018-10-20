@@ -17,6 +17,6 @@ Route::get('/', function () {
 
 
 // Contador
-Route::get('/contador.contador', 'ContadorCtrl');
-Route::get('/contador.contador/+', 'ContadorCtrl@sumar');
-Route::get('/contador.contador/-', 'ContadorCtrl@restar');
+Route::get('contador', function () {
+    return view('contador');
+})->name('contador');

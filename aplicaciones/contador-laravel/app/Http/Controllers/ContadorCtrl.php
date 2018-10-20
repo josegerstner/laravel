@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 
 class ContadorCtrl extends Controller
 {
-    //funcion para sumar
-    public function sumar($numero){
-        $numero = $numero + 1;
-        return $numero;
-    }
+    public $numero = 0;
 
-    public function restar($numero){
-        $numero = $numero - 1;
-        return
+    //funcion para sumar
+    public function add(){
+        return $numero = $numero + 1;
     }
     //funcion para restar
+    public function substract(){
+        return $numero = $numero - 1;
+    }
 }
