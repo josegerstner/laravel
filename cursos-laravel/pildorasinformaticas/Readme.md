@@ -2,7 +2,7 @@
   
 [Ver el curso en su canal de Youtube](https://www.youtube.com/playlist?list=PLU8oAlHdN5Bk-qkvjER90g2c_jVmpAHBh)  
   
-# Laravel
+Laravel
 ===
   
 Laravel es un framework que utiliza el patrón de diseño Modelo Vista Controlador.  
@@ -145,7 +145,7 @@ php artisan route:list
 ---  
 
   
-# Laravel_2
+Laravel_2
 ===
   
 Creamos un nuevo proyecto y nuestro controlador con:  
