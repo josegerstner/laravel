@@ -13,7 +13,7 @@ class MiControlador extends Controller
      */
     public function index()
     {
-        //
+        return view("welcome");
     }
 
     /**
@@ -23,7 +23,7 @@ class MiControlador extends Controller
      */
     public function create()
     {
-        //
+        return view("crear");
     }
 
     /**
@@ -32,9 +32,9 @@ class MiControlador extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        return view("articulos");
     }
 
     /**
@@ -43,9 +43,9 @@ class MiControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        return view("mostrar");
     }
 
     /**
@@ -80,5 +80,10 @@ class MiControlador extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function contactar()
+    {
+        return view("contacto");
     }
 }

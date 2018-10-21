@@ -1,4 +1,9 @@
-# Curso Laravel de **pildorasinformaticas**
+# Curso Laravel de **pildorasinformaticas**  
+  
+[Ver el curso en su canal de Youtube](https://www.youtube.com/playlist?list=PLU8oAlHdN5Bk-qkvjER90g2c_jVmpAHBh)  
+  
+# Laravel  
+===
   
 Laravel es un framework que utiliza el patrón de diseño Modelo Vista Controlador.  
 	Modelo: peticiones a BBDD  
@@ -13,11 +18,10 @@ Debemos tener composer y php como se indica en la [documentación de Laravel](ht
 Instalamos Laravel globalmente:
 ```  
 composer global require "laravel/installer"  
-```  
-
+```    
 Básicamente se creó una aplicación llamada Laravel con el siguiente comando:  
 ```  
-laravel new blog  
+laravel new Laravel  
 ```  
   
 # Las Rutas (*routes*):
@@ -113,7 +117,7 @@ public function index($id)
   
 ### Creación de un sitio web  
 Para crear un sitio web, debemos saber que las vistas se ubican en la carpeta **/*resources*/*views*** y tienen que tener la extensión **.blade.php** por convención.  
-Por eso cuando vemos que las rutas devuelven una vista *return view('welcome');*, la vista se llama welcome**.blade.php**.  
+Por eso cuando vemos que las rutas devuelven una vista *return view('welcome');*, la vista se llama **welcome.blade.php**.  
   
 Una vez aclarado este punto, pasamos a la creación de un controlador con el que nos manejaremos:  
 ```  
@@ -139,4 +143,83 @@ php artisan route:list
   
   
 ---  
+
   
+# Laravel_2  
+===
+  
+Creamos un nuevo proyecto y nuestro controlador con:  
+```  
+composer global require "laravel/installer"  
+laravel new Laravel_2  
+cd Laravel_2  
+php artisan make:controller --resource MiControlador  
+```  
+Esto nos crea el archivo *MiControlador.php* en la carpeta /*app*/*Http*/*Controllers*.  
+Cambiamos la función index para que nos devuelva la vista 'welcome'.  
+  
+Desde el explorador de archivos, creamos tres vistas más: crear, mostrar, articulos. Recordar siempre la extensión .blade.php.  
+Luego en el controlador, modificamos la función show para que retorne la vista mostrar, lo mismo para store y artículos y create y crear. Además, sacamos los parámetros que reciben store y show para que nos facilite probar por el momento. Nos quedará algo así:  
+```  
+public function create(){  
+	return view("crear");  
+}  
+  
+public function store(){  
+	return view("articulos");  
+}  
+  
+public function show(){  
+	return view("mostrar");  
+}  
+```  
+También tenemos que agregar las rutas apuntando a nuestro controlador.  
+```  
+Route::get("/", "MiControlador@index");  
+Route::get("/crear", "MiControlador@create");  
+Route::get("/articulos", "MiControlador@store");  
+Route::get("/mostrar", "MiControlador@show");  
+```  
+Vemos si funciona entrando a cada url.  
+  
+# Bootstrap  
+Agregamos [Bootstrap](https://getbootstrap.com/) a alguna página de nuestro proyecto como se muestra en la documentación.  
+Podemos agregar los enlaces en las páginas o descargarlo y reemplazar en la carpeta /*public* las carpetas **css** y **js** con las carpetas css y js que trar Bootstrap.  
+  
+Si elegimos la opción de reemplazar las carpetas css y js, tenemos que linkear desde el *head* del html con la función **{{ asset }}** de la siguiente manera para que funcione Bootstrap:  
+```  
+<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+```  
+  
+# Blade  
+### ¿Qué es Blade?  
+Es un motor (constructor) de plantillas que viene con Laravel.  
+### ¿Para qué sirve?  
+Crear vistas de forma más sencilla y limpia.  
+### ¿Cómo lo hace?  
+- Reutilizando código.  
+- Creando código más limpio evitando el uso de etiquetas php y html (en lo posible).  
+- Modularizando:  
+    - Templates.  
+	- Partials.  
+  
+La idea de *Blade* es armar una plantilla maestra para que las páginas que vayamos armando hereden los funcionalidades comunes de esa plantilla maestra para hacer menos código y, por lo tanto, tener menos errores en la práctica.  
+Para crear esta plantilla maestra nos ubicamos dentro de la carpeta *views* y creamos otra llamada **layouts**. Puede llevar cualquier nombre, pero por convención se llama así.  
+Dentro de esta carpeta creamos el archivo **plantilla.blade.php** que va a ser nuestra plantilla maestra, de la que van a heredar las demás. Creamos la estructura html base de cualquier página y dejamos en el body algo así:  
+```  
+<body>  
+    <div class="contenedor">  
+        @yield("cabecera")  
+    </div>  
+  
+    <div class="infoGeneral">  
+        @yield("infoGeneral")  
+    </div>  
+  
+    <div class="pie">  
+        @yield("pie")  
+        Aquí iría el texto del pie.  
+    </div>  
+</body>  
+```  
+Las funciones de Blade empiezan con **@**.  **@yield** recibe un string que 
