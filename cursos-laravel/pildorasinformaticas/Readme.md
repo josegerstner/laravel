@@ -222,4 +222,22 @@ Dentro de esta carpeta creamos el archivo **plantilla.blade.php** que va a ser n
     </div>  
 </body>  
 ```  
-Las funciones de Blade empiezan con **@**.  **@yield** recibe un string que 
+Las funciones de Blade empiezan con **@**.  
+**@yield** : utilizando la directiva @yield dentro de la plantilla principal podemos indicar secciones (pasando como argumento el nombre de la sección) y luego en plantillas individuales podemos colocar el contenido de dichas secciones:  
+```  
+@extends("layouts.plantilla")
+
+@section("cabecera")
+    <h1>Contacto</h1>
+@endsection
+
+@section("infoGeneral")
+    <p>Aquí iría el contenido principal de la página.</p>
+@endsection
+
+@section("pie")
+
+@endsection
+
+```  
+  
