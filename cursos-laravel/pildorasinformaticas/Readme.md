@@ -1,0 +1,11 @@
+# Curso Laravel de **pildorasinformaticas**
+  
+Laravel es un framework que utiliza el patrón de diseño Modelo Vista Controlador.  
+	Modelo: peticiones a BBDD  
+	Vista: documentos HTML  
+	Controlador: intermediario entre Modelo y Vista  
+Utiliza el concepto de modularización, dividir una aplicación en módulos o partes.  
+  
+  
+# Las Rutas (routes):
+Hacen referencia a las url de la aplicación.  

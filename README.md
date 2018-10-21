@@ -55,8 +55,8 @@ DB_PASSWORD=
 - /*vendor* : folder that you don't touch. Here is the framework source.  
  
 - /*resources*/*views* : build your pages here.  
-Extension views 
-You can have a folder named layouts and build your pages with style.  
+Extension views  
+You can have a folder named layouts and build your pages with style and class.  
   
 - /*routes* : build your links in **web.php**.  
   
