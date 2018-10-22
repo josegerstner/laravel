@@ -521,3 +521,100 @@ Route::get("/leer", function(){
     return $articulos;  
 });  
 ```  
+Acá tenemos varias cláusulas y hay muchas más que se pueden ver en la [documentación](https://laravel.com/docs/5.7/queries).  
+->first(), ->max('Precio'), ->count(), ->avg('Precio'), etc...  
+  
+#### Insertar y Actualizar registros  
+- **Insertar**: para insertar un nuevo registro, necesitamos crear una instancia del modelo y luego manejar los atributos (campos) pertenecientes a la instancia.  
+```  
+Route::get("/insertar", function(){  
+    $articulos = new Articulo;  
+  
+    $articulos->Nombre_Articulo="Pantalones";  
+    $articulos->Precio=60;  
+    $articulos->pais_origen="España";  
+    $articulos->observaciones="Cortes a la piedra";  
+    $articulos->seccion="Confección";  
+  
+    $articulos->save();  
+});  
+```  
+Recordar:  
+1. Crear instancia.  
+2. Manejar atributos.  
+3. Guardar.  
+  
+- **Actualizar**: para actualizar un registro, se hace de la misma manera que *Insertar* pero con la diferencia de que en lugar de crear una nueva instancia, obtengo el objeto/registro a actualizar con el método **find** y pasando el id como parámetro.  
+```  
+Route::get("/actualizar", function(){  
+    $articulos = Articulo::find(6);  
+  
+    $articulos->Nombre_Articulo="Pantalones";  
+    $articulos->Precio=90;  
+    $articulos->pais_origen="España";  
+    $articulos->observaciones="Cortes a la piedra";  
+    $articulos->seccion="Confección";  
+  
+    $articulos->save();  
+});  
+```  
+Recordar:  
+1. Buscar la instancia.  
+2. Manejar atributos.  
+3. Guardar.  
+  
+#### Actualizaciones masivas  
+Para actualizar varios registros usando algún criterio, debemos utilizar la cláusula/función **where** desde un modelo indicando el campo a actualizar y el valor actual y luego con la función **update** le pasamos campo y nuevo valor con un [array asociativo de PHP](http://php.net/manual/es/language.types.array.php).  
+```  
+Route::get("/actualizar", function(){  
+    Articulo::where("seccion", "Cerámica")->update(["seccion"=>"Menaje"]);  
+});  
+```  
+Si queremos actualizar por varios criterios, sólo debemos poner tantos **where** como criterio queramos tener.  
+```  
+Route::get("/actualizarvarioscriterios", function(){  
+    Articulo::where("pais_origen", "España")->where("seccion", "Menaje")->update(["Precio"=>90]);  
+});  
+```  
+  
+#### Borrar
+Para borrar necesitamos traer el artículo a eliminar con la función **find** pasándole el id del registro a eliminar y luego ejecutarle la función **delete()**:  
+```  
+Route::get("/borrar", function(){  
+    $articulo = Articulo::find(2);  
+  
+    $articulo->delete();  
+});  
+```  
+Si queremos borrar utilizando criterios en lugar del id, debemos usar la cláusula **where** como hicimos antes.  
+```  
+Route::get("/borrar", function(){  
+    Articulo::where("seccion", "FERRETERÍA")->delete();  
+});  
+```  
+  
+#### Varias inserciones simultáneas  
+A la hora de usar una base de datos, es muy probable que haya muchos usuarios conectados a esa BBDD y quieran crear, actualizar, borrar registros al mismo tiempo. Laravel lo sabe y por eso tiene una función llamada **create** a la cual le pasamos los campos que los usuarios puedan actualizar simultáneamente.  
+```  
+Route::get("/insercionvarios", function(){  
+    Articulo::create([  
+        "Nombre_Articulo"=>"Impresora",  
+        "Precio"=>50,  
+        "pais_origen"=>"Colombia",  
+        "observaciones"=>"Nada que decir",  
+        "seccion"=>"Informática"  
+        ]);  
+});  
+```  
+Si probamos esta url, nos debería dar un error ya que aún no habilitamos la modificación o inserción de estos campos. Esto se hace en el modelo con la propiedad *protected* **$fillable**:  
+```  
+class Articulo extends Model {  
+    protected $fillable = [  
+        "Nombre_Articulo",  
+        "Precio",  
+        "pais_origen",  
+        "observaciones",  
+        "seccion"  
+    ];  
+}  
+```  
