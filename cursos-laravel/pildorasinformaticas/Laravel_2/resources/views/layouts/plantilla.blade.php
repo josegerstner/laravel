@@ -9,34 +9,21 @@
 
     <script src="main.js"></script>
 
-    <style>
-        .contenedor{
-            background-color:#F00;
-            text-align:center;
-        }
-        .infoGeneral{
-            background-color:#00F;
-            margin:200pk 0;
-            color:#FFF;
-        }
-        .pie{
-            background-color:#FF0;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-    <div class="contenedor">
-        @yield("cabecera")
-    </div>
+    @include("layouts.navbar")
+    @yield("cabecera")
 
-    <div class="infoGeneral">
-        @yield("infoGeneral")
-    </div>
+    @include("layouts.card")
+    @yield("infoGeneral")
 
-    <div class="pie">
-        @yield("pie")
-        Aquí iría el texto del pie.
-    </div>
+    @yield("pie")
+    Aquí iría el texto del pie.
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
