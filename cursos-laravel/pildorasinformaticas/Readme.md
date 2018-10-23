@@ -618,3 +618,180 @@ class Articulo extends Model {
     ];  
 }  
 ```  
+  
+#### Soft Delete (enviar a papelera)  
+Se trata de un borrado en el cual los registros se dan de baja, pero no se borran de la base de datos.  
+Para habilitar esta opción hay que seguir 3 pasos en el modelo:  
+En primer lugar importar la clase **SoftDeletes** de *Elocuent*. Luego hacer uso de esa clase y por último sobreescribir la propiedad **$dates** como **deleted_at**. Quedándonos algo así:  
+```  
+<?php  
+namespace App;  
+use Illuminate\Database\Eloquent\Model;  
+use Illuminate\Database\Eloquent\SoftDeletes;  
+  
+class Articulo extends Model{  
+    use SoftDeletes;  
+    protected $dates = ['deleted_at'];  
+    ...   
+}  
+```  
+También hay que agregar el campo *deleted_at* a la tabla.  
+```  
+php artisan make:migration add_deleted_at_column_to_articulos_tables --table=articulos  
+```  
+Luego hay que agregar al migration el método **softDeletes()**:  
+```  
+<?php  
+  
+use Illuminate\Support\Facades\Schema;  
+use Illuminate\Database\Schema\Blueprint;  
+use Illuminate\Database\Migrations\Migration;  
+  
+class AddDeletedAtColumnToArticulosTables extends Migration{  
+    public function up()  
+    {  
+        Schema::table('articulos', function (Blueprint $table) {  
+            $table->softDeletes();  
+        });  
+    }  
+    public function down()  
+    {  
+        Schema::table('articulos', function (Blueprint $table) {  
+            $table->dropColumn('deleted_at');  
+        });  
+    }  
+}  
+```  
+Y por útlimo, impactar el migration en la base de datos.  
+```  
+php artisan migrate
+```  
+Una vez hecho esto, cuando borremos un registro de la tabla se actualizará el campo de la tabla con la fecha actual en lugar de eliminar el registro. Sin embargo, al querer utilizar el registro con el campo *deleted_at* actulizado Laravel no lo mostrará ya que está dado de baja. Sólo lo podremos ver en la base de datos. Si queremos obtener el artículo que está *en la papelera*, debemos utilizar el método **withTrashed()**.  
+```  
+Route::get("/leer", function(){  
+    $articulos=Articulo::withTrashed()  
+                ->where('id', 4)  
+                ->get();  
+});  
+```  
+También podemos traer sólo los artículos que hayan sido borrados con el método **onlyTrashed()**.  
+Si queremos restaurar el registro en la base de datos para que no esté más borrado, debemos utilizar el método **restore()**.  
+Para borrar definitivamente un registro, debemos utilizar el método **forceDelete()** de la misma manera que los demás métodos.  
+```  
+Route::get("/hardDelete", function(){  
+    $articulo=Articulo::withTrashed()  
+        ->where('id', 4)  
+        ->forceDelete();  
+});  
+```  
+  
+#### Relaciones entre tablas
+- ***[Relaciones uno a uno](https://laravel.com/docs/5.7/eloquent-relationships#one-to-one)***
+Supongamos que tenemos una tabla *clientes* (con campos *id*, *Nombre* y *Apellido*) donde tenemos cargados varios clientes y un cliente puede comprarnos un único artículo (los artículos también son únicos en este ejemplo). Entonces para registrar qué cliente compró cada artículo, deberíamos tener un campo en la tabla de artículo con el *id del cliente*. Esto se llama **clave foránea** y es la manera de relacionar dos tablas ***uno a uno***. Los campos *id* de las tablas articulos y clientes son **claves primarias** de su propia tabla.  
+Antes que nada, necesitamos tener una tabla *clientes* y el modelo *Cliente*, los cuales creamos de la siguiente manera (como ya vimos):  
+```  
+php artisan make:model Cliente --migration  
+```  
+Esto nos crea un la migración de la tabla de clientes con sólo el campo *id* y los timestamps. Así que tenemos que agregarle los atributos *Nombre* y *Apellidos* para que los cree como campos cuando se cree la tabla.  
+```  
+<?php  
+use Illuminate\Support\Facades\Schema;  
+use Illuminate\Database\Schema\Blueprint;  
+use Illuminate\Database\Migrations\Migration;  
+class CreateClientesTable extends Migration  
+{  
+    public function up(){  
+        Schema::create('clientes', function (Blueprint $table) {  
+            $table->increments('id');  
+            $table->srting('Nombre');  
+            $table->srting('Apellidos');  
+            $table->timestamps();  
+        });  
+    }  
+    public function down(){  
+        Schema::dropIfExists('clientes');  
+    }  
+}  
+```  
+Agregamos algunos clientes:  
+Primero modificamos la propiedad *$fillable* del modelo Cliente:  
+```  
+<?php  
+namespace App;  
+use Illuminate\Database\Eloquent\Model;  
+class Cliente extends Model{  
+    protected $fillable = [  
+        "Nombre",  
+        "Apellidos"  
+    ];  
+}  
+```  
+Y después hacemos una inserción de varios clientes con una ruta en el archivo *web.php*:  
+```  
+Route::get("/insercionvarios", function(){  
+    Cliente::create(  
+        ["Nombre"=>"Paco",  
+        "Apellidos"=>"Pérez"]  
+    );  
+    Cliente::create(  
+        ["Nombre"=>"Sandra",  
+        "Apellidos"=>"López"]  
+    );  
+    Cliente::create(  
+    ["Nombre"=>"María",  
+        "Apellidos"=>"Rojas"]  
+    );  
+});  
+```  
+Primero haciendo el migration correspondiente del campo *cliente_id* a la tabla *articulos*:  
+```  
+php artisan make:migration add_cliente_id_column_to_articulos_tables --table=articulos  
+```  
+Agregamos el campo *cliente_id* al migration:  
+```  
+<?php  
+use Illuminate\Support\Facades\Schema;  
+use Illuminate\Database\Schema\Blueprint;  
+use Illuminate\Database\Migrations\Migration;  
+class AddClienteIdColumnToArticulosTables extends Migration{  
+    public function up(){  
+        Schema::table('articulos', function (Blueprint $table) {  
+            $table->integer('cliente_id');  
+        });  
+    }  
+    public function down(){  
+        Schema::table('articulos', function (Blueprint $table) {  
+            $table->dropColumn('cliente_id');  
+        });  
+    }  
+}  
+```  
+Y por último, actualizamos algunos artículos con el id de los clientes a través de una ruta:  
+```  
+Route::get("/actualizarClienteIdDeArticulos", function(){  
+    $articulo1 = Articulo::find(1);  
+    $articulo1->cliente_id=3;  
+    $articulo1->save();  
+    $articulo2 = Articulo::find(2);  
+    $articulo2->cliente_id=1;  
+    $articulo2->save();  
+    $articulo3 = Articulo::find(3);  
+    $articulo3->cliente_id=2;  
+    $articulo3->save();  
+});  
+```  
+En Laravel, la relación **uno a uno** se puede hacer de la siguiente manera:  
+Primero debemos crear en el modelo Cliente una función llamada *articulo()* que retorne la clave foránea. Esto se hace con el método **hasOne()** al que le pasamos como parámetro el modelo donde se encuentra la clave foránea.  
+```  
+public function articulo(){  
+    return $this->hasOne("App\Articulo");  
+}  
+```  
+Para ver el artículo que compró un cliente, podemos hacer desde una ruta lo siguiente:  
+```  
+Route::get("/cliente/{id}/articulo", function($id){  
+    return Cliente::find($id)->articulo;  
+});  
+```  
+Podemos ver que esta ruta nos devuelve el artículo que compró el cliente con el id que le pasemos como parámetro.  
+  

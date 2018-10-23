@@ -1,6 +1,7 @@
 <?php
 
 use App\Articulo;
+use App\Cliente;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,14 +75,23 @@ Route::get("/insertar", function(){
 });
 
 Route::get("/actualizar", function(){
-    $articulos = Articulo::find(6);
+    // $articulos = Articulo::find(6);
 
-    $articulos->Nombre_Articulo="Pantalones";
-    $articulos->Precio=90;
-    $articulos->pais_origen="España";
-    $articulos->observaciones="Cortes a la piedra";
-    $articulos->seccion="Confección";
+    // $articulos->Nombre_Articulo="Pantalones";
+    // $articulos->Precio=90;
+    // $articulos->pais_origen="España";
+    // $articulos->observaciones="Cortes a la piedra";
+    // $articulos->seccion="Confección";
 
+    // $articulos->save();
+    $articulos = Articulo::find(1);
+    $articulos->cliente_id=3;
+    $articulos->save();
+    $articulos = Articulo::find(2);
+    $articulos->cliente_id=1;
+    $articulos->save();
+    $articulos = Articulo::find(3);
+    $articulos->cliente_id=2;
     $articulos->save();
 });
 Route::get("/actualizarmasivo", function(){
@@ -99,11 +109,37 @@ Route::get("/borrar", function(){
 });
 
 Route::get("/insercionvarios", function(){
-    Articulo::create([
-        "Nombre_Articulo"=>"Impresora",
-        "Precio"=>50,
-        "pais_origen"=>"Colombia",
-        "observaciones"=>"Nada que decir",
-        "seccion"=>"Informática"
-        ]);
+    // Articulo::create([
+    //     "Nombre_Articulo"=>"Impresora",
+    //     "Precio"=>50,
+    //     "pais_origen"=>"Colombia",
+    //     "observaciones"=>"Nada que decir",
+    //     "seccion"=>"Informática"
+    //     ]);
+    Cliente::create(
+        // ["Nombre"=>"Paco",
+        // "Apellidos"=>"Pérez"]
+        ["Nombre"=>"Sandra",
+        "Apellidos"=>"López"]
+    );
+
+    Cliente::create(
+    ["Nombre"=>"María",
+        "Apellidos"=>"Rojas"]
+    );
+});
+
+Route::get("/softdelete", function(){
+    Articulo::find(4)->delete();
+});
+Route::get("/hardDelete", function(){
+    $articulo=Articulo::withTrashed()
+        ->where('id', 4)
+        ->forceDelete();
+});
+
+
+//Ver el artículo que compró un cliente
+Route::get("/cliente/{id}/articulo", function($id){
+    return Cliente::find($id)->articulo;
 });
