@@ -686,7 +686,7 @@ Route::get("/hardDelete", function(){
 ```  
   
 #### Relaciones entre tablas
-- ***[Relaciones uno a uno](https://laravel.com/docs/5.7/eloquent-relationships#one-to-one)***
+- ***[Relaciones uno a uno](https://laravel.com/docs/5.7/eloquent-relationships#one-to-one)***  
 Supongamos que tenemos una tabla *clientes* (con campos *id*, *Nombre* y *Apellido*) donde tenemos cargados varios clientes y un cliente puede comprarnos un único artículo (los artículos también son únicos en este ejemplo). Entonces para registrar qué cliente compró cada artículo, deberíamos tener un campo en la tabla de artículo con el *id del cliente*. Esto se llama **clave foránea** y es la manera de relacionar dos tablas ***uno a uno***. Los campos *id* de las tablas articulos y clientes son **claves primarias** de su propia tabla.  
 Antes que nada, necesitamos tener una tabla *clientes* y el modelo *Cliente*, los cuales creamos de la siguiente manera (como ya vimos):  
 ```  
@@ -794,4 +794,210 @@ Route::get("/cliente/{id}/articulo", function($id){
 });  
 ```  
 Podemos ver que esta ruta nos devuelve el artículo que compró el cliente con el id que le pasemos como parámetro.  
+  
+- ***Relación inversa***  
+Consiste en invertir el sentido de la consulta.  
+Hasta ahora siempre preguntamos qué artículo pertenece a un cliente. Lo que la relación inversa es hacer la pregunta al revés, *qué cliente compró un artículo*. Esto se resuelve con el método **belongsTo()** en el modelo del *Articulo* pasándole como parámetro el *Cliente*.  
+```  
+public function cliente(){  
+    return $this.belongsTo('Cliente');  
+}  
+```  
+Esta función puede llevar más de un parámetro en caso de que no optemos por llamar a los campos *id* del cliente en la tabla articulos como *cliente_id*.  
+```  
+// en caso de tener una clave primaria distinta de cliente_id en la tabla articulos  
+public function cliente(){  
+    return $this.belognsTo('Cliente', 'local_key');  
+}  
+// en caso de tener una clave primaria distinta de cliente_id en la tabla articulos y además el campo del cliente no se llama id  
+public function cliente(){  
+    return $this.belongsTo('Cliente', 'local_key', 'parent_key');  
+}  
+```  
+Para probar esto hay que agregar la ruta al archivo *web.php*:  
+```  
+//Relación inversa  
+//Ver el cliente que compró un artículo  
+Route::get("/articulo/{id}/cliente", function($id){  
+    return Articulo::find($id)->cliente->Nombre;  
+});  
+```  
+  
+- ***[Relación uno a muchos](https://laravel.com/docs/5.7/eloquent-relationships#one-to-many)***  
+Se trata en el caso en que un registro de una tabla se relaciona con más de un registro de otra tabla.  
+En nuestro caso es un cliente que puede comprar varios artículos. Es muy parecido a la relación uno a uno, pero con el método **hasMany()**.  
+```  
+public function articulos(){  
+    return $this->hasMany("App\Articulo");  
+}  
+```  
+Como la consulta es qué articulos compró el cliente, nos puede devolver más de un registro. Entoces debemos retornar el resultado con un bucle **foreach**.  
+```  
+Route::get("/cliente/{id}/articulos", function($id){  
+    $articulos = Cliente::find($id)->articulos;  
+    foreach($articulos as $articulo){  
+        echo $articulo->Nombre_Articulo . "<br>";  
+    }  
+});  
+```  
+  
+- ***[Relación muchos a muchos](https://laravel.com/docs/5.7/eloquent-relationships#many-to-many)***  
+Esta relación resulta cuando más de un registro de una tabla se relaciona con más de un registro de otra tabla.  
+En este caso no se puede agregar un campo a una de las tablas (ni mucho menos a las dos) como clave foránea de otra tabla, sino que se resuelve con una tercera tabla que relacione los id de las dos tablas anteriores. A esta tercera tabla se la conoce como tabla pivot.  
+Laravel resuelve esto con el nombre de la tercera tabla sea elnombredelaprimeratablaensingular_elnombredelasegundatablaensingular, pero no solo eso, sino que las tablas hay que ordenarlas alfabéticamente. Además hay que agregar a los modelos el método **belongsToMany()** dentro de una función con el nombre de la tabla a la que se quiere relacionar.  
+Para este ejemplo se creó modelo *Perfil* y una tabla *perfils* (recordar que los plurales para Laravel es la misma palabra que el modelo pero agregando una *s*) y se creó una tabla *cliente_perfil* (ya que alfabéticamente cliente viene antes que perfil):  
+```  
+php artisan make:model Perfil -m
+php artisan make:migration create_clientes_perfiles_table --create=cliente_perfil
+```  
+Luego tocamos las migraciones para que tengan los campos que nos importan:  
+```  
+<?php  
+use Illuminate\Support\Facades\Schema;  
+use Illuminate\Database\Schema\Blueprint;  
+use Illuminate\Database\Migrations\Migration;  
+
+class CreatePerfilsTable extends Migration{  
+    public function up(){  
+        Schema::create('perfils', function (Blueprint $table) {  
+            $table->increments('id');  
+            $table->string('Nombre');  
+            $table->timestamps();  
+        });  
+    }  
+    public function down(){  
+        Schema::dropIfExists('perfils');  
+    }  
+}  
+```  
+```  
+<?php  
+use Illuminate\Support\Facades\Schema;  
+use Illuminate\Database\Schema\Blueprint;  
+use Illuminate\Database\Migrations\Migration;  
+  
+class CreateClientesPerfilesTable extends Migration{  
+    public function up(){  
+        Schema::create('cliente_perfil', function (Blueprint $table) {  
+            $table->increments('id');  
+            $table->integer('cliente_id');  
+            $table->integer('perfil_id');  
+            $table->timestamps();  
+        });  
+    }  
+    public function down(){  
+        Schema::dropIfExists('cliente_perfil');  
+    }  
+}  
+```  
+Y migramos:  
+```  
+php artisan migrate  
+```  
+Ingresamos un par de perfiles y un par de relaciones, por MySQL para hacer más rápido:  
+```  
+INSERT INTO perfiles(Nombre) VALUES ("frecuente");  
+INSERT INTO perfiles(Nombre) VALUES ("ocasional");  
+INSERT INTO perfiles(Nombre) VALUES ("nuevo");  
+INSERT INTO cliente_perfil(cliente_id, perfil_id) VALUES (1,2);  
+INSERT INTO cliente_perfil(cliente_id, perfil_id) VALUES (2,1);  
+INSERT INTO cliente_perfil(cliente_id, perfil_id) VALUES (3,2);  
+```  
+Y agregamos a los modelos el método **belongsToMany()**.  
+```  
+class Perfil extends Model  
+{  
+    public function clientes(){  
+        return $this->belongsToMany("App\Cliente");  
+    }  
+}  
+class Cliente extends Model  
+{  
+    public function perfils(){  
+        return $this->belongsToMany("App\Perfil");  
+    }  
+}  
+```  
+Y por útlimo agregamos las rutas:  
+```
+// qué perfiles tiene un cliente  
+Route::get("/cliente/{id}/perfil", function($id){  
+    $cliente=Cliente::find($id);  
+    foreach($cliente->perfils as $perfil){  
+        return $perfil->Nombre;  
+    }  
+});  
+// qué clientes tienen cierto perfil  
+Route::get("/perfil/{id}/cliente", function($id){  
+    $perfiles=Perfil::find($id);  
+    foreach($perfil->clientes as $cliente){  
+        return $cliente->Nombre;  
+    }  
+});  
+```  
+  
+- ***[Relaciones polimórficas](https://laravel.com/docs/5.7/eloquent-relationships#polymorphic-relations)***  
+Estas relaciones suceden cuando hay una tabla que puede relacionarse con más de una tabla como uno a muchos gracias a los campos y el uso que se le puede dar. En la documentación oficial nos dan el ejemplo de comentarios que se le pueden hacer a su vez a post o a videos. Para identificar la tabla a la que se hace referencia, se agrega un campo **entero** id para relacionar al registro con el que se hace referencia y además se agrega un campo **string** para indicar el modelo con el que hace referencia ese campo id "foráneo".  
+En este ejemplo se agrega una tabla *calificaciones* con los campos *id*, *calificacion*, *calificacion_id* y *calificacion_type*, estos dos últimos harán referencia a las tablas de *articulos* y *clientes* suponiendo que hay usuarios que califican a los artículos y a los clientes.  
+```  
+php artisan make:model Calificaciones -m
+```  
+Agregamos los campos que le faltan a la migración:  
+```  
+Schema::create('calificaciones', function (Blueprint $table) {  
+    $table->increments('id');  
+    $table->integer('calificacion');  
+    $table->integer('calificacion_id');  
+    $table->string('calificacion_type');  
+    $table->timestamps();  
+});  
+```  
+Y migramos:  
+```  
+php artisan migrate  
+```  
+Luego ingresamos un par de calificaciones a la tabla por medio de MySQL:  
+```  
+INSERT INTO calificaciones(calificacion, calificacion_id, calificacion_type) VALUES (8, 4, 'App\\Articulo');  
+INSERT INTO calificaciones(calificacion, calificacion_id, calificacion_type) VALUES (4, 1, 'App\\Cliente');  
+```  
+*Notar en este caso que se ingresan dos barras invertidas porque son caracteres especiales. Si ingresáramos por PhpMyAdmin, no debería tener este problema.*  
+Laravel resuelve estas relaciones polimórficas agregando a la tabla polimórfica el método **morphTo()** y a las otras tablas involucradas el método **morphMany** pasándole como parámetro el modelo polimórfico y el método que hace referencia a *morphTo*.  
+```  
+class Calificaciones extends Model{  
+    public function calificacion(){  
+        $this->morphTo();  
+    }  
+}  
+```  
+```  
+class Cliente extends Model{  
+    public function calificaciones(){  
+        return $this->morphMany("App\Calificaciones", "calificacion");  
+    }  
+}  
+```  
+```  
+class Articulo extends Model{  
+    public function calificaciones(){  
+        return $this->morphMany("App\Calificaciones", "calificacion");  
+    }  
+}  
+```  
+Y por último agregamos las rutas para probar:  
+```  
+//Realaciones polimórficas  
+Route::get("/calificacionescliente/{id}", function($id){  
+    $cliente = Cliente::find($id);  
+    foreach($cliente->calificaciones as $calificacion){  
+        echo $calificacion->calificacion;  
+    }  
+});  
+Route::get("/calificacionesarticulo/{id}", function($id){  
+    $articulo = Articulo::find($id);  
+    foreach($articulo->calificaciones as $calificacion){  
+        echo $calificacion->calificacion;  
+    }  
+});  
+```  
   

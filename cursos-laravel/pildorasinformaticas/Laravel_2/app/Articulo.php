@@ -19,5 +19,11 @@ class Articulo extends Model
         "seccion"
     ];
 
+    public function cliente(){
+        return $this->belongsTo('App\Cliente');
+    }
 
+    public function calificaciones(){
+        return $this->morphMany("App\Calificaciones", "calificacion");
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Articulo;
 use App\Cliente;
+use App\Perfil;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,8 +139,77 @@ Route::get("/hardDelete", function(){
         ->forceDelete();
 });
 
-
+//Relación uno a uno
 //Ver el artículo que compró un cliente
 Route::get("/cliente/{id}/articulo", function($id){
     return Cliente::find($id)->articulo;
+});
+
+//Relación inversa
+//Ver el cliente que compró un artículo
+Route::get("/articulo/{id}/cliente", function($id){
+    return Articulo::find($id)->cliente->Nombre;
+});
+
+//actualizar el id del artículo 5 para decir que lo compró el cliente 3
+Route::get("/actualizarclienteidarticulo5", function(){
+    Articulo::where("id", 5)->update(["cliente_id"=>3]);
+});
+
+//Relación uno a muchos
+//Ver los articulos que compró un cliente
+Route::get("/cliente/{id}/articulos", function($id){
+    $articulos = Cliente::find($id)->articulos;
+    foreach($articulos as $articulo){
+        echo $articulo->Nombre_Articulo . "<br>";
+    }
+});
+
+Route::get("/cliente/{id}/articulosSuiza", function($id){
+    $articulos = Cliente::find($id)->articulos->where('pais_origen', 'Suiza');
+    foreach($articulos as $articulo){
+        echo $articulo->Nombre_Articulo . "<br>";
+    }
+});
+
+Route::get("/insercionperfiles", function(){
+    Perfil::create(
+        ["Nombre"=>"frecuente"]
+    );
+    Perfil::create(
+        ["Nombre"=>"ocasional"]
+    );
+    Perfil::create(
+        ["Nombre"=>"nuevo"]
+    );
+});
+
+//Relación muchos a muchos
+// qué perfiles tiene un cliente
+Route::get("/cliente/{id}/perfil", function($id){
+    $cliente=Cliente::find($id);
+    foreach($cliente->perfils as $perfil){
+        return $perfil->Nombre;
+    }
+});
+// qué clientes tienen cierto perfil
+Route::get("/perfil/{id}/cliente", function($id){
+    $perfil=Perfil::find($id);
+    foreach($perfil->clientes as $cliente){
+        echo $cliente->Nombre . "<br>";
+    }
+});
+
+//Realaciones polimórficas
+Route::get("/calificacionescliente/{id}", function($id){
+    $cliente = Cliente::find($id);
+    foreach($cliente->calificaciones as $calificacion){
+        echo $calificacion->calificacion;
+    }
+});
+Route::get("/calificacionesarticulo/{id}", function($id){
+    $articulo = Articulo::find($id);
+    foreach($articulo->calificaciones as $calificacion){
+        echo $calificacion->calificacion;
+    }
 });
