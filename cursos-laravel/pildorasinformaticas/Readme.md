@@ -2,7 +2,7 @@
   
 [Ver el curso en su canal de Youtube](https://www.youtube.com/playlist?list=PLU8oAlHdN5Bk-qkvjER90g2c_jVmpAHBh)  
   
-Laravel
+[Laravel](https://laravel.com/)
 ===
   
 Laravel es un framework que utiliza el patrón de diseño Modelo Vista Controlador.  
@@ -24,7 +24,7 @@ Básicamente se creó una aplicación llamada Laravel con el siguiente comando:
 laravel new Laravel  
 ```  
   
-# Las Rutas (*routes*):
+# [Las Rutas (*routes*)](https://laravel.com/docs/routing):
 Hacen referencia a las url de la aplicación.  
 Se configuran en el archivo /*routes*/*web.php*  
   
@@ -49,7 +49,7 @@ Route::get('/post/{id}/{nombre}', function ($id, $nombre) {
 })->where('nombre', '[a-zA-Z]+');  
 ```  
   
-# Los Controladores (*controllers*):
+# [Los Controladores (*controllers*)](https://laravel.com/docs/controllers):
 Son los mediadores entre el modelo (o la base de datos) y las vistas.  
 Se encuentran en la carpeta /*app*/*Http*/*Controllers*. El archivo *Controller.php* es el que controla por defecto toda la aplicación. El código que tiene es el siguiente:  
 ```  
@@ -145,7 +145,7 @@ php artisan route:list
 ---  
 
   
-Laravel_2
+[Laravel_2](https://laravel.com/)
 ===
   
 Creamos un nuevo proyecto y nuestro controlador con:  
@@ -182,8 +182,8 @@ Route::get("/mostrar", "MiControlador@show");
 ```  
 Vemos si funciona entrando a cada url.  
   
-# Bootstrap  
-Agregamos [Bootstrap](https://getbootstrap.com/) a alguna página de nuestro proyecto como se muestra en la documentación.  
+# [Bootstrap](https://getbootstrap.com/)  
+Agregamos [Bootstrap](https://getbootstrap.com/) a alguna página de nuestro proyecto como se muestra en la [documentación](https://getbootstrap.com/docs/4.1/getting-started/introduction/).  
 Podemos agregar los enlaces en las páginas o descargarlo y reemplazar en la carpeta /*public* las carpetas **css** y **js** con las carpetas css y js que trar Bootstrap.  
   
 Si elegimos la opción de reemplazar las carpetas css y js, tenemos que linkear desde el *head* del html con la función **{{ asset }}** de la siguiente manera para que funcione Bootstrap:  
@@ -191,7 +191,7 @@ Si elegimos la opción de reemplazar las carpetas css y js, tenemos que linkear 
 <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
 ```  
   
-# Blade  
+# [Blade](https://laravel.com/docs/blade)  
 ### ¿Qué es Blade?  
 Es un motor (constructor) de plantillas que viene con Laravel.  
   
@@ -316,7 +316,7 @@ La plantilla principal de nuestro proyecto, nos quedaría algo parecido a lo sig
 ```  
   
   
-# Bases de datos  
+# [Bases de datos] (https://laravel.com/docs/database)
 Laravel nos permite utilizar varios tipos de bases de datos, tanto relacionales como no relacionales.  
 En el archivo /*app*/*config*/***database.php*** tenemos la devolución de un array con la configuración de la base de datos.  
 En la línea  
@@ -386,7 +386,7 @@ public function up(){
 ```  
 El campo *observaciones* es text en lugar de string porque necesita tener más caracteres de lo que tiene normalmente un campo *nombre*.  
 Luego con el comando ***php artisan migrate*** impactamos nuestro migration en la base de datos.  
-Como podemos ver en MySQL, el campo *Precio* es del tipo integer. Si queremos saber qué tipos de datos soporta Laravel y cómo manejarlos desde nuestros migrations, tenemos que ir a la documentación de Laravel en la sección [migrations](https://laravel.com/docs/5.7/migrations#columns) y fijarnos cómo hacerlo.  
+Como podemos ver en MySQL, el campo *Precio* es del tipo integer. Si queremos saber qué tipos de datos soporta Laravel y cómo manejarlos desde nuestros migrations, tenemos que ir a la documentación de Laravel en la sección [migrations](https://laravel.com/docs/migrations#columns) y fijarnos cómo hacerlo.  
 Para arreglar este problema, debemos ejecutar el comando  
 ```  
 php artisan migrate:rollback
@@ -469,9 +469,10 @@ Route::get("/borrar", function(){
 ```  
 En este caso, la función utilizada es también es *update*.  
   
-#### [Elocuent](https://laravel.com/docs/5.7/eloquent)  
-La otra forma de manipular los registros de una base de datos es usar **[Elocuent](https://laravel.com/docs/5.7/eloquent)**.  
-[Elocuent](https://laravel.com/docs/5.7/eloquent) es un ORM (Object Relational Mapping). Un ORM utiliza la programación orientada a objetos para manipular una base de datos. Para esto, vamos a necesitar clases o ***modelos***. Un modelo se crea para cada tabla de la base de datos utilizando el mismo nombre pero en singular. Entonces para manipular la tabla *articulos* vamos a necesitar un modelo llamado *Articulo*. Estos objetos tienen *propiedades* y *métodos* que nos permitirán manipular los registros de la base de datos sin tener que usar lenguaje **SQL**. Ejecutemos el comando:  
+# [Elocuent](https://laravel.com/docs/eloquent)  
+La otra forma de manipular los registros de una base de datos es usar **[Elocuent](https://laravel.com/docs/eloquent)**.  
+### ¿Qué es?
+Es un ORM (Object Relational Mapping). Un ORM utiliza la programación orientada a objetos para manipular una base de datos. Para esto, vamos a necesitar clases o ***modelos***. Un modelo se crea para cada tabla de la base de datos utilizando el mismo nombre pero en singular. Entonces para manipular la tabla *articulos* vamos a necesitar un modelo llamado *Articulo*. Estos objetos tienen *propiedades* y *métodos* que nos permitirán manipular los registros de la base de datos sin tener que usar lenguaje **SQL**. Ejecutemos el comando:  
 ```  
 php artisan make:model Articulo  
 ```  
@@ -521,10 +522,10 @@ Route::get("/leer", function(){
     return $articulos;  
 });  
 ```  
-Acá tenemos varias cláusulas y hay muchas más que se pueden ver en la [documentación](https://laravel.com/docs/5.7/queries).  
+Acá tenemos varias cláusulas y hay muchas más que se pueden ver en la [documentación](https://laravel.com/docs/queries).  
 ->first(), ->max('Precio'), ->count(), ->avg('Precio'), etc...  
   
-#### Insertar y Actualizar registros  
+### Insertar y Actualizar registros  
 - **Insertar**: para insertar un nuevo registro, necesitamos crear una instancia del modelo y luego manejar los atributos (campos) pertenecientes a la instancia.  
 ```  
 Route::get("/insertar", function(){  
@@ -563,7 +564,7 @@ Recordar:
 2. Manejar atributos.  
 3. Guardar.  
   
-#### Actualizaciones masivas  
+### Actualizaciones masivas  
 Para actualizar varios registros usando algún criterio, debemos utilizar la cláusula/función **where** desde un modelo indicando el campo a actualizar y el valor actual y luego con la función **update** le pasamos campo y nuevo valor con un [array asociativo de PHP](http://php.net/manual/es/language.types.array.php).  
 ```  
 Route::get("/actualizar", function(){  
@@ -577,7 +578,7 @@ Route::get("/actualizarvarioscriterios", function(){
 });  
 ```  
   
-#### Borrar
+### Borrar
 Para borrar necesitamos traer el artículo a eliminar con la función **find** pasándole el id del registro a eliminar y luego ejecutarle la función **delete()**:  
 ```  
 Route::get("/borrar", function(){  
@@ -593,7 +594,7 @@ Route::get("/borrar", function(){
 });  
 ```  
   
-#### Varias inserciones simultáneas  
+### Varias inserciones simultáneas  
 A la hora de usar una base de datos, es muy probable que haya muchos usuarios conectados a esa BBDD y quieran crear, actualizar, borrar registros al mismo tiempo. Laravel lo sabe y por eso tiene una función llamada **create** a la cual le pasamos los campos que los usuarios puedan actualizar simultáneamente.  
 ```  
 Route::get("/insercionvarios", function(){  
@@ -619,7 +620,7 @@ class Articulo extends Model {
 }  
 ```  
   
-#### Soft Delete (enviar a papelera)  
+### Soft Delete (enviar a papelera)  
 Se trata de un borrado en el cual los registros se dan de baja, pero no se borran de la base de datos.  
 Para habilitar esta opción hay que seguir 3 pasos en el modelo:  
 En primer lugar importar la clase **SoftDeletes** de *Elocuent*. Luego hacer uso de esa clase y por último sobreescribir la propiedad **$dates** como **deleted_at**. Quedándonos algo así:  
@@ -685,8 +686,8 @@ Route::get("/hardDelete", function(){
 });  
 ```  
   
-#### Relaciones entre tablas
-- ***[Relaciones uno a uno](https://laravel.com/docs/5.7/eloquent-relationships#one-to-one)***  
+### Relaciones entre tablas
+- ***[Relaciones uno a uno](https://laravel.com/docs/eloquent-relationships#one-to-one)***  
 Supongamos que tenemos una tabla *clientes* (con campos *id*, *Nombre* y *Apellido*) donde tenemos cargados varios clientes y un cliente puede comprarnos un único artículo (los artículos también son únicos en este ejemplo). Entonces para registrar qué cliente compró cada artículo, deberíamos tener un campo en la tabla de artículo con el *id del cliente*. Esto se llama **clave foránea** y es la manera de relacionar dos tablas ***uno a uno***. Los campos *id* de las tablas articulos y clientes son **claves primarias** de su propia tabla.  
 Antes que nada, necesitamos tener una tabla *clientes* y el modelo *Cliente*, los cuales creamos de la siguiente manera (como ya vimos):  
 ```  
@@ -823,7 +824,7 @@ Route::get("/articulo/{id}/cliente", function($id){
 });  
 ```  
   
-- ***[Relación uno a muchos](https://laravel.com/docs/5.7/eloquent-relationships#one-to-many)***  
+- ***[Relación uno a muchos](https://laravel.com/docs/eloquent-relationships#one-to-many)***  
 Se trata en el caso en que un registro de una tabla se relaciona con más de un registro de otra tabla.  
 En nuestro caso es un cliente que puede comprar varios artículos. Es muy parecido a la relación uno a uno, pero con el método **hasMany()**.  
 ```  
@@ -841,7 +842,7 @@ Route::get("/cliente/{id}/articulos", function($id){
 });  
 ```  
   
-- ***[Relación muchos a muchos](https://laravel.com/docs/5.7/eloquent-relationships#many-to-many)***  
+- ***[Relación muchos a muchos](https://laravel.com/docs/eloquent-relationships#many-to-many)***  
 Esta relación resulta cuando más de un registro de una tabla se relaciona con más de un registro de otra tabla.  
 En este caso no se puede agregar un campo a una de las tablas (ni mucho menos a las dos) como clave foránea de otra tabla, sino que se resuelve con una tercera tabla que relacione los id de las dos tablas anteriores. A esta tercera tabla se la conoce como tabla pivot.  
 Laravel resuelve esto con el nombre de la tercera tabla sea elnombredelaprimeratablaensingular_elnombredelasegundatablaensingular, pero no solo eso, sino que las tablas hay que ordenarlas alfabéticamente. Además hay que agregar a los modelos el método **belongsToMany()** dentro de una función con el nombre de la tabla a la que se quiere relacionar.  
@@ -936,7 +937,7 @@ Route::get("/perfil/{id}/cliente", function($id){
 });  
 ```  
   
-- ***[Relaciones polimórficas](https://laravel.com/docs/5.7/eloquent-relationships#polymorphic-relations)***  
+- ***[Relaciones polimórficas](https://laravel.com/docs/eloquent-relationships#polymorphic-relations)***  
 Estas relaciones suceden cuando hay una tabla que puede relacionarse con más de una tabla como uno a muchos gracias a los campos y el uso que se le puede dar. En la documentación oficial nos dan el ejemplo de comentarios que se le pueden hacer a su vez a post o a videos. Para identificar la tabla a la que se hace referencia, se agrega un campo **entero** id para relacionar al registro con el que se hace referencia y además se agrega un campo **string** para indicar el modelo con el que hace referencia ese campo id "foráneo".  
 En este ejemplo se agrega una tabla *calificaciones* con los campos *id*, *calificacion*, *calificacion_id* y *calificacion_type*, estos dos últimos harán referencia a las tablas de *articulos* y *clientes* suponiendo que hay usuarios que califican a los artículos y a los clientes.  
 ```  
@@ -1001,3 +1002,61 @@ Route::get("/calificacionesarticulo/{id}", function($id){
 });  
 ```  
   
+# [Tinker](https://laravel.com/docs/artisan#introduction)  
+### ¿Qué es?  
+Es una herramienta que nos permite interactuar con las BBDD utilizando en Laravel Eloquent.  
+### ¿Para qué sirve?  
+Para *testear* desde consola cómo quedarían los datos.  
+### ¿Qué se puede hacer con Tinker?  
+Insertar registros, comprobar relaciones, etc. Acciones CRUD.  
+  
+Para usar *Tinker* hay que poner en la consola:  
+```  
+php artisan tinker  
+```  
+Se puede probar cualquier código php en la consola. Pero también podemos insertar, actualizar, borrar registros de la base de datos. También podemos probar modelos sin necesidad de crear las rutas.  
+  
+### Insertar  
+Para insertar un cliente nuevo deberíamos hacer lo siguiente:  
+```  
+$cliente = App\Cliente::create(["Nombre"=>"Antonio", "Apellidos"=>"Fernández"]);  
+```  
+Recordar que debemos tener habilitada la manipulación de estos campos desde el modelo con la propiedad **$fillable**. Si nos olvidamos de este permiso y agregamos los campos al array de $fillable, debemos reiniciar tinker ya que sino no nos tomará los cambios efectuados en el modelo.  
+  
+También podemos usar POO usando una variable $miCliente del modelo Cliente, ya que es código php. Debemos instanciar la variable, setear los campos que queremos y guardar con el método **save()** para que se impacte en la BBDD.  
+```  
+$miCliente = new App\Cliente;  
+$miCliente->Nombre="Jennifer";  
+$miCliente->Apellidos="Martín";  
+$miCliente->save();  
+```  
+Nota: los punto y coma pueden ser opcionales en tinker, pero es mejor acostrumbrarse a usarlos porque cuando se quiera hacer código php nos vamos a encontrar con la costumbre de no usarlos y ahí aparecen los errores.  
+  
+### Actualizar  
+Para actualizar al cliente con id 3 debemos buscarlo, guardarlo en una variable y luego salvarlo en la BBDD.  
+```  
+$cliente=App\Cliente::find(3);  
+$cliente->Apellidos="Martínez";  
+$cliente->save();  
+```  
+  
+### Borrar  
+Para eliminar un registro de la BBDD debemos buscarlo con el método *find()*, guardarlo en una variable y luego utilizar el método **delete()**. En caso de ser una tabla con los campos *delete_at*, hay que usar el método **forcedelete()**.  
+```  
+$cliente=App\Cliente::find(5);  
+$cliente->delete();  
+```  
+  
+  
+[Laravel_CRUD](https://laravel.com/) - Práctica guiada  
+===  
+  
+# Creación de CRUD con formularios  
+Creamos un nuevo proyecto llamado Laravel_CRUD.  
+```  
+laravel new Laravel_CRUD  
+```  
+Luego creamos la tabla *productos*:  
+```  
+php artisan make:migration create_productos_table --create="productos"  
+```  
