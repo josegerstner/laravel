@@ -1048,6 +1048,9 @@ $cliente->delete();
 ```  
   
   
+---  
+
+  
 [Laravel_CRUD](https://laravel.com/) - Práctica guiada  
 ===  
   
@@ -1060,3 +1063,39 @@ Luego creamos la tabla *productos*:
 ```  
 php artisan make:migration create_productos_table --create="productos"  
 ```  
+Agregamos los campos a la migración:  
+```  
+public function up(){
+    Schema::create('productos', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('NombreArticulo');
+        $table->string('Seccion');
+        $table->integer('Precio');
+        $table->string('Fecha');
+        $table->string('PaisOrigen');
+        $table->timestamps();
+    });
+}
+```  
+E impactamos la migración en la base de datos:  
+```  
+php artisan migrate  
+```  
+Recordá que hay que tenerla configurada en el archivo **.env** de la raíz del proyecto (ver más arriba).  
+  
+Creamos un controlador con los métodos default para ahorrar tiempo:  
+```  
+php artisan make:controller --resource ProductosController  
+```  
+Creamos una ruta que nos lleve a nuestra página principal:  
+```  
+Route::get('/inicio', 'ProductosController@index');  
+```  
+Y agregamos un texto en el método index de nuestro controlador para probar si funciona:  
+```  
+public function index(){  
+    return "Estás en la página de inicio";  
+}  
+```  
+  
+Una vez que comprobamos que *todo va bien para Milhouse*, creamos una carpeta /*resources*/*views*/**productos** para guardar nuestras vistas. Además creamos un documento **create.blade.php**.  

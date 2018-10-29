@@ -11,17 +11,22 @@
         <link rel="icon" type="image/png" href="/img/laravel.png"/>
     </head>
     <body>
-        @section('header')
-            MASTER HEADER
-        @show
 
-        <div class="container">
-            @yield('content')
+        @section('cabecera')
+            <h1>Esta es la cabecera</h1>
+        show
+
+        <div class="container-fluid d-inline-block">
+            @section('contenido')
+                <p>Este es el contenido</p>
+            show
         </div>
 
-        @section('footer')
-            MASTER FOOTER
-        @show
+        <footer class="page-footer indigo center-on-small-only pt-0">
+            @section('pie')
+                MASTER FOOTER
+            @show
+        </footer>
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->

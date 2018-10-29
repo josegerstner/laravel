@@ -11,6 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ProductosController@index');
+
+Route::get('/inicio', 'ProductosController@index');
+
+Route::get('/crear', 'ProductosController@create');
+Route::get('/actualizar', 'ProductosController@update');
+Route::get('/insertar', 'ProductosController@store');
+Route::get('/borrar', 'ProductosController@destroy');

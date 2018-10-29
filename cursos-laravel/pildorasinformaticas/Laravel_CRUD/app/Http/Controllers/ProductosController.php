@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CounterCtrl extends Controller
+class ProductosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class CounterCtrl extends Controller
      */
     public function index()
     {
-        //
+        return "Estás en la página de inicio";
     }
 
     /**
@@ -23,7 +23,7 @@ class CounterCtrl extends Controller
      */
     public function create()
     {
-        //
+        return view('productos.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class CounterCtrl extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('productos.insert');
     }
 
     /**
@@ -68,7 +68,7 @@ class CounterCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return view('productos.update');
     }
 
     /**
@@ -79,6 +79,6 @@ class CounterCtrl extends Controller
      */
     public function destroy($id)
     {
-        //
+        return view('productos.delete');
     }
 }

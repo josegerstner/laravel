@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,13 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('index');
-});
-
-
 // Contador
-Route::get('contador', function () {
-    return view('contador');
-})->name('contador');
+Route::get('/', "ContadorCtrl@mostrar");
+Route::get('/sumar/{numero}', "ContadorCtrl@add");
+Route::get('/restar/{numero}', "ContadorCtrl@subtract");
