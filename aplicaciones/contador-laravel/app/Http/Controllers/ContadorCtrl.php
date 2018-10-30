@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ContadorCtrl extends Controller
-{
+class ContadorCtrl extends Controller{
+
     public $numero = 0;
 
     public function mostrar(){
-        return view('contador', ['numero'=>$this->numero]);
+        return view('contador', ['num'=>$this->numero]);
     }
 
     //funcion para sumar
-    public function add($numero){
-        $this->numero = $numero++;
-        return view('contador', ['numero'=>$this->numero]);
+    public function sumar($num){
+        $this->numero=++$num;
+        $num=$this->numero;
+        $this->mostrar();
     }
     //funcion para restar
-    public function substract($numero){
-        $this->numero = $numero--;
-        return view('contador', ['numero'=>$this->numero]);
+    public function restar($num){
+        $this->numero=--$num;
+        $num=$this->numero;
+        $this->mostrar();
     }
 }

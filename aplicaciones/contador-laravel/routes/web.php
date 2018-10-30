@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers;
+use App\Http\Controllers\ContadorCtrl;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +12,6 @@ use App\Http\Controllers;
 */
 // Contador
 Route::get('/', "ContadorCtrl@mostrar");
-Route::get('/sumar/{numero}', "ContadorCtrl@add");
-Route::get('/restar/{numero}', "ContadorCtrl@subtract");
+Route::get('/contador', "ContadorCtrl@mostrar");
+Route::get('/sumar/{num}', "ContadorCtrl@sumar");
+Route::get('/restar/{num}', "ContadorCtrl@restar");

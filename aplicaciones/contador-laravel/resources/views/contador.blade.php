@@ -1,45 +1,21 @@
 @extends('layouts.master')
 
-@section('title', 'contador')
+@section('title', 'Contador')
 
 
-@section('header')
-    <h2>Contador</h2>
+@section('cabecera')
+    Contador
 @stop
 
-@section('content')
+@section('contenido')
     <div class="container">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <button type="button" class="btn btn-primary" type="submit" value="restar">-</button>
-            <button type="button" class="btn btn-light" disabled>{{ $numero }}</button>
-            <button type="button" class="btn btn-primary" type="submit" value="sumar">+</button>
+        <div class="row justify-content-md-center">
+            <div class="btn-group-vertical btn-group-toggle col-12" data-toggle="buttons">
+                <a href="/sumar/{{$num}}" class="btn btn-lg btn-primary active" aria-pressed="true" style="text-align:center">+</a>
+                <button type="button" class="btn btn-lg btn-light" disabled>{{ $num }}</button>
+                <a href="/restar/{{$num}}" class="btn btn-lg btn-primary active" aria-pressed="true" style="text-align:center">-</a>
+            </div>
         </div>
     </div>
-@stop
 
-@section('pruebas')
-    <div class="pruebas h-100">
-
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-            <button type="button" class="btn btn-primary" type="submit" value="restar">-</button>
-            <button type="button" class="btn btn-light" disabled>{{ $numero }}</button>
-            <button type="button" class="btn btn-primary" type="submit" value="sumar">+</button>
-        </div>
-
-        <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-primary" type="submit" value="restar">-</button>
-            <button type="button" class="btn btn-light" disabled>{{ $numero }}</button>
-            <button type="button" class="btn btn-primary" type="submit" value="sumar">+</button>
-        </div>
-
-        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-            <button type="button" class="btn btn-primary" type="submit" value="restar">-</button>
-            <button type="button" class="btn btn-light" disabled>{{ $numero }}</button>
-            <button type="button" class="btn btn-primary" type="submit" value="sumar">+</button>
-        </div>
-    </div>
-@stop
-
-@section('footer')
-    <p></p>
 @stop
