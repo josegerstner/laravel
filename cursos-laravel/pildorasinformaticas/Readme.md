@@ -1077,11 +1077,16 @@ public function up(){
     });
 }
 ```  
+Debemos agregar el método **nullable** para los campos que queremos que acepten valores nulos, por ejemplo:  
+```  
+$table->string('Seccion');->nullable();  
+```  
 E impactamos la migración en la base de datos:  
 ```  
 php artisan migrate  
 ```  
-Recordá que hay que tenerla configurada en el archivo **.env** de la raíz del proyecto (ver más arriba).  
+Recordá que la base de datos hay que tenerla configurada en el archivo **.env** de la raíz del proyecto (ver más arriba).  
+Si queremos resetear nuestra migración, debemos hacer: *php artisan migrate:reset*.  
   
 Creamos un controlador con los métodos default para ahorrar tiempo:  
 ```  
@@ -1099,3 +1104,25 @@ public function index(){
 ```  
   
 Una vez que comprobamos que *todo va bien para Milhouse*, creamos una carpeta /*resources*/*views*/**productos** para guardar nuestras vistas. Además creamos un documento **create.blade.php**.  
+  
+*Nota: en la documentación de Laravel nos dice que con solamente una línea de código podemos definir todas las rutas de un controlador.*  
+Para ello necesitamos utilizar la palabra **resource** en lugar de **get**:  
+```  
+Route::resource('/productos', 'ProductosController');  
+```    
+Creamos el modelo Producto para la manipulación de nuestros productos:  
+```  
+php artisan make:model Producto  
+```  
+Creado el modelo, debemos importarlo en el ProductosController con **use App\Producto;**.  
+  
+Volvemos al formulario y agregamos la acción y el método csrf_field() que proteje contra ataques.  
+```  
+<form method="post" action="/productos">  
+    <input type="text" name="NombreArticulo">  
+    {{ csrf_field() }}  
+    <input type="submit" name="Enviar" value="Enviar">  
+</form>  
+```  
+Ahora ingresando el nombre del artículo en el campo y luego presionando el botón enviar estamos ingresando productos. Podemos confirmar esto en la tabla *productos* de la base de datos.  
+  

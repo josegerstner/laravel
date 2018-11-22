@@ -13,9 +13,11 @@
 
 Route::get('/', 'ProductosController@index');
 
-Route::get('/inicio', 'ProductosController@index');
+Route::resource('/productos', 'ProductosController');
 
-Route::get('/crear', 'ProductosController@create');
-Route::get('/actualizar', 'ProductosController@update');
-Route::get('/insertar', 'ProductosController@store');
-Route::get('/borrar', 'ProductosController@destroy');
+// Route::get('/inicio', 'ProductosController@index');
+
+// Route::get('/crear', 'ProductosController@create');
+// Route::get('/actualizar', 'ProductosController@update');
+// Route::get('/insertar', 'ProductosController@store');
+// Route::get('/borrar', 'ProductosController@destroy');
