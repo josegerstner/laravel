@@ -1125,4 +1125,76 @@ Volvemos al formulario y agregamos la acción y el método csrf_field() que prot
 </form>  
 ```  
 Ahora ingresando el nombre del artículo en el campo y luego presionando el botón enviar estamos ingresando productos. Podemos confirmar esto en la tabla *productos* de la base de datos.  
-  
+Hacemos lo mismo con todos los campos:  
+```  
+<form method="post" action="/productos">  
+    <input type="text" name="NombreArticulo">  
+    {{ csrf_field() }}  
+    <input type="text" name="Seccion">  
+    {{ csrf_field() }}  
+    <input type="text" name="Precio">  
+    {{ csrf_field() }}  
+    <input type="text" name="Fecha">  
+    {{ csrf_field() }}  
+    <input type="text" name="PaisOrigen">  
+    {{ csrf_field() }}  
+    <input type="submit" name="Enviar" value="Enviar">  
+</form>  
+```  
+También podríamos crear una tabla o lo que queramos. Lo importante es que el controlador pueda recibir esos campos. Para eso los agregamos en la función **store** en *ProductosController* utilizada para agregar productos:  
+```  
+public function store(Request $request)  
+    {  
+        $producto = new Producto;  
+        $producto->NombreArticulo=$request->NombreArticulo;  
+        $producto->Seccion=$request->Seccion;  
+        $producto->Precio=$request->Precio;  
+        $producto->Fecha=$request->Fecha;  
+        $producto->PaisOrigen=$request->PaisOrigen;  
+          
+        $producto->save();  
+    }  
+```  
+Para ver los productos ingresados desde nuestra aplicación, primero necesitamos en el controlador instanciar una variable *$productos* y pasársela a la vista con la función **compact**:  
+```  
+public function index()  
+    {  
+        $productos=Producto::all();  
+          
+        return view('productos.index', compact("productos"));  
+    }  
+```  
+Ahora creamos una vista llamada **index.blade.php** y hacemos una tabla con los productos que tenemos en la base de datos.  
+Para eso debemos usar la función **@foreach** y llamando a cada campo con **{{ }}**:  
+```  
+<div class="row justify-content-center">  
+    <div class="col col-6 align-self-center">  
+        <form method="post" action="/productos">  
+            <div class="table-responsive">  
+                <table class="table table-bordered">  
+                    <thead>  
+                        <tr>  
+                            <th scope="col">Nombre</th>  
+                            <th scope="col">Sección</th>  
+                            <th scope="col">Precio</th>  
+                            <th scope="col">Fecha</th>  
+                            <th scope="col">País de Origen</th>  
+                        </tr>  
+                    </thead>  
+                    <tbody>  
+                        @foreach($productos as $producto)  
+                            <tr>  
+                                <th scope="row">{{$producto->NombreArticulo}}</th>  
+                                <td>{{$producto->Seccion}}</td>  
+                                <td>{{$producto->Precio}}</td>  
+                                <td>{{$producto->Fecha}}</td>  
+                                <td>{{$producto->PaisOrigen}}</td>  
+                            </tr>  
+                        @endforeach  
+                    </tbody>  
+                </table>  
+            </div>  
+        </form>  
+    </div>  
+</div>  
+```  
