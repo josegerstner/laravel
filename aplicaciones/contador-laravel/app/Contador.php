@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contador extends Model
 {
-    //
+    protected $fillable = ['numero'];
 }

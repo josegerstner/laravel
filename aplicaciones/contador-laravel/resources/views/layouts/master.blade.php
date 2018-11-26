@@ -4,28 +4,28 @@
         <meta charset="utf-8" />
         <title>@yield('title')</title>
 
+        <!-- Icono de la página -->
+        <link rel="icon" href="/images/counter.png">
+
         <!-- BOOTSTRAP -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-        <!-- Icono de la página -->
-        <link rel="icon" type="image/png" href="/img/counter.png"/>
     </head>
     <body>
 
         @include('layouts.navbar')
 
-        <h1 align="center">
+        <h1 class="text-center">
             @section('cabecera')
                 Esta es la cabecera
             @show
         </h1>
-
+        <br>
         <div class="container-fluid d-inline-block justify-content-center">
             @section('contenido')
                 <p>Este es el contenido</p>
             @show
         </div>
-
+        <br>
         <footer class="page-footer indigo center-on-small-only pt-0" style="position: absolute; bottom: 0; width: 100%;">
             @section('footer')
                 @include('layouts.pie')

@@ -9,11 +9,14 @@
 
 @section('contenido')
     <div class="container">
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center text-center">
             <div class="btn-group-vertical btn-group-toggle col-12" data-toggle="buttons">
-                <a href="/sumar" class="btn btn-lg btn-primary" style="text-align:center">+</a>
-                <button type="button" class="btn btn-lg btn-light" disabled>{{ $num }}</button>
-                <a href="/restar/{{$num}}" class="btn btn-lg btn-primary" aria-pressed="true" style="text-align:center">-</a>
+                <input type ='button' class="btn btn-lg btn-primary"  value = '+' onclick="location.href = '{{ '/sumar' }}'"/>
+                <button type="button" class="btn btn-lg btn-light" disabled>{{ $numero }}</button>
+                <input type ='button' class="btn btn-lg btn-primary"  value = '-' onclick="location.href = '{{ '/restar' }}'"/>
+            </div>
+            <div class="btn-group-vertical btn-group-toggle col-12 pt-5" data-toggle="buttons">
+                <input type ='button' class="btn btn-lg btn-dark"  value = 'Resetear' onclick="location.href = '{{ '/resetear' }}'"/>
             </div>
         </div>
     </div>

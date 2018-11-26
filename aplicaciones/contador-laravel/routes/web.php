@@ -14,4 +14,5 @@ use App\Http\Controllers\ContadorCtrl;
 Route::get('/', "ContadorCtrl@mostrar");
 Route::get('/contador', "ContadorCtrl@mostrar");
 Route::get('/sumar', "ContadorCtrl@sumar");
-Route::get('/restar/{num}', "ContadorCtrl@restar");
+Route::get('/restar', "ContadorCtrl@restar");
+Route::get('/resetear', "ContadorCtrl@resetear");
