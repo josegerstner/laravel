@@ -23,7 +23,7 @@
             margin:0 auto;
         }
         .pie{
-            position:fixed;
+            position:relative;
             bottom:0px;
             width:100%;
             font-size:0.7em;
